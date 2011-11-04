@@ -1,0 +1,51 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #333;
+    color: #FFF;
+}
+
+button {
+    float: left;
+    margin: 4px 6px;
+    width: 72px;
+    height: 25px;
+    border-radius: 8px;
+    border: none;
+}
+
+button:hover {
+    cursor: pointer;
+    color: #eee;
+    background-color: #222;
+}
+
+.unit {
+    border: 1px solid #CCC;
+    border-width: 0 1px 1px 0;
+    float: left;
+}
+
+#canvas {
+    background: #FFF;
+    overflow: hidden;
+    border-radius: 6px;
+    margin: auto;
+    margin-top: 10px;
+    vertical-align: bottom;
+}
+
+#control-panel {
+    display: block;
+    position: absolute;
+    top: 200px;
+    left: 200px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.6);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+#monitor {
+    width: 200px;
+}
