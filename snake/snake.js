@@ -45,7 +45,7 @@ Snake.prototype.move = function() {
             headNode[0]++;
             break;
         case UP:
-             headNode[1]--;
+            headNode[1]--;
             break;
         case DOWN:
             headNode[1]++;
@@ -53,8 +53,8 @@ Snake.prototype.move = function() {
     }
     var addedNode = headNode;
     // exceed the border 
-    if (addedNode[0] < 0 || addedNode[1] >= unitNumX ||
-        addedNode[1] < 0 || addedNode[1] >= unitNumY) {
+    if (addedNode[0] < 0 || addedNode[0] >= unitNumX || // x
+    addedNode[1] < 0 || addedNode[1] >= unitNumY) { // y
         this.end = true;
         return;
     } // hit an snake(including itselt)
@@ -283,7 +283,7 @@ window.onload = function() {
     stopButton.onclick = function() {snake.stop();};
 
 
-    
+
     // draw displaying area
     drawGrid();
     clearmapMatrix();
