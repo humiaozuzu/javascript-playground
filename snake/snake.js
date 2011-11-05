@@ -23,6 +23,7 @@
 const UNIT_LENGTH = 20;
 var unitNumX, unitNumY;
 const LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
+var direction;
 
 // data structures used by Interpreter
 var mapMatrix; // 2d array storing the map 
@@ -33,6 +34,7 @@ function Snake() {
 }
 
 Snake.prototype.move = function() {
+    this.getDirection();
     // get the location of added node
     var headNode = [].concat(this.body[0]);
     switch (this.direction) {
@@ -77,6 +79,31 @@ Snake.prototype.move = function() {
     mapMatrix[addedNode[1]][addedNode[0]] = 1;
     // update canvas
     domMatrix[addedNode[1]][addedNode[0]].style.backgroundColor = "yellow"; 
+}
+
+Snake.prototype.getDirection = function() {
+    switch (direction) {
+        case UP: 
+            if (this.direction != DOWN) {
+                this.direction = UP;
+            }
+            break;
+        case DOWN: 
+            if (this.direction != UP) {
+                this.direction = DOWN;
+            }
+            break;
+        case LEFT: 
+            if (this.direction != RIGHT) {
+                this.direction = LEFT;
+            }
+            break;
+        case RIGHT: 
+            if (this.direction != LEFT) {
+                this.direction = RIGHT;
+            }
+            break;
+    }        
 }
 
 Snake.prototype.step = function() {
@@ -230,29 +257,21 @@ window.onload = function() {
     //key_display = document.getElementById("key");
 
     snake = new Snake();
-    //bind the snake controller with player
+    //bind the snake controller with player's pressed direction
     document.onkeydown = function(event) {
         //key_display.innerText = event.keyCode + '';
         switch (event.keyCode) {
             case 38: 
-                if (snake.direction != DOWN) {
-                    snake.direction = UP;
-                }
+                direction = UP;
                 break;
             case 39:
-                if (snake.direction != LEFT) {
-                    snake.direction = RIGHT;
-                }
+                direction = RIGHT;
                 break;
             case 40:
-                if (snake.direction != UP) {
-                    snake.direction = DOWN;
-                }
+                direction = DOWN;
                 break;
             case 37:
-                if (snake.direction != RIGHT) {
-                    snake.direction = LEFT;
-                }
+                direction = LEFT;
                 break;
         }
     }
@@ -260,7 +279,7 @@ window.onload = function() {
     // bind events handlers
     runButton.onclick = function() {snake.run();}; 
     stepButton.onclick = function() {snake.step();};
-    resetButton.onclick = function() {snake.reset();}; 
+    resetButton.onclick = function() {snake.reset(); direction = RIGHT;}; 
     stopButton.onclick = function() {snake.stop();};
 
 
