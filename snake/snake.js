@@ -53,7 +53,7 @@ Snake.prototype.move = function() {
     }
     var addedNode = headNode;
     // exceed the border 
-    if (addedNode[0] < 0 || addedNode >= unitNumX ||
+    if (addedNode[0] < 0 || addedNode[1] >= unitNumX ||
         addedNode[1] < 0 || addedNode[1] >= unitNumY) {
         this.end = true;
         return;
