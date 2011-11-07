@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Snake</title>
     <link rel="stylesheet" href="./style.css" media="screen" charset="utf-8" />
+    <script type="text/javascript" src="./PathFinding.min.js"></script>
     <script type="text/javascript" src="./snake.js"></script>
   </head>
   <body>
@@ -17,10 +18,13 @@
       <!--</p>-->
       <!--</div>-->
     <div id="control-panel"> 
+      Input AI Number: <input type="TEXT" size="2" id="ai-number" />
+      <br />
+      <button id="initbutton">Init</button>
       <button id="runbutton">Run</button>
       <button id="stepbutton">Step</button>
       <button id="resetbutton">Reset</button>
-      <button id="stopbutton">Stop</button>
+      <!--<button id="stopbutton">Stop</button>-->
     </div>
   </body>
 </html>

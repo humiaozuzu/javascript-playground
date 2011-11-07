@@ -24,12 +24,14 @@ const UNIT_LENGTH = 20;
 var unitNumX, unitNumY;
 const LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
 var direction;
+var foodX, foodY;
 
 // data structures used by Interpreter
 var mapMatrix; // 2d array storing the map 
 var domMatrix;  // 2d array storing the canvas dom references
 
-function Snake() {
+function Snake(controller) {
+    this.controller = controller; 
     this.resetData();
 }
 
@@ -63,7 +65,7 @@ Snake.prototype.move = function() {
         return;
     } // eat food
     else if (mapMatrix[addedNode[1]][addedNode[0]] == 2) {
-        this.grow = 2;        
+        this.grow = 1;        
         generateFood();
     }
 
@@ -78,11 +80,21 @@ Snake.prototype.move = function() {
     //update map matrix
     mapMatrix[addedNode[1]][addedNode[0]] = 1;
     // update canvas
-    domMatrix[addedNode[1]][addedNode[0]].style.backgroundColor = "yellow"; 
+    domMatrix[addedNode[1]][addedNode[0]].style.backgroundColor = this.color; 
+}
+
+Snake.prototype.step = function() {
+    if (this.end) {
+        return;
+    }
+
+    // execute instruction
+    this.move();
 }
 
 Snake.prototype.getDirection = function() {
-    switch (direction) {
+    var cur_direction = this.controller();
+    switch (cur_direction) {
         case UP: 
             if (this.direction != DOWN) {
                 this.direction = UP;
@@ -106,21 +118,13 @@ Snake.prototype.getDirection = function() {
     }        
 }
 
-Snake.prototype.step = function() {
-    if (this.end) {
-        return;
-    }
-
-    // execute instruction
-    this.move();
-}
-
 Snake.prototype.run = function() {
     this.step();
 
     if (!this.end) {
         // continuously call step every 20ms
-        setTimeout(function(){snake.run();}, 100);
+        var self = this;
+        setTimeout(function(){self.run();}, 100);
     }
     else {
         alert('Game over');
@@ -129,16 +133,19 @@ Snake.prototype.run = function() {
 
 Snake.prototype.resetData = function() {
     this.direction = RIGHT;  // program counter direction
-    this.end = false;        // bool value indicating the termination of game 
-    this.body = [[3, 0], [2, 0], [1, 0], [0, 0]];
-    this.grow = 0;
+    this.end = true;        // bool value indicating the termination of game 
+    this.body = [getRandomEmptyUnit()];
+    this.grow = 3;
+    this.color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
 }
 
-Snake.prototype.draw = function() {
+Snake.prototype.draw = function(initPoint) {
+    if (initPoint != undefined)
+        this.body[0] = initPoint;
     for (var i = 0; i < this.body.length; i++) {
         element = this.body[i];
         // draw snake in canvas
-        domMatrix[element[1]][element[0]].style.backgroundColor = "yellow";
+        domMatrix[element[1]][element[0]].style.backgroundColor = this.color;
 
         // draw snake in map matrix
         mapMatrix[element[1]][element[0]] = 1;
@@ -211,28 +218,76 @@ function clearmapMatrix() {
     }
 }
 
-function generateFood() {
-    while (true) {
-        var randomX = Math.floor(unitNumX*Math.random());
-        var randomY = Math.floor(unitNumY*Math.random());
-        console.log(randomX); 
-        console.log(randomY); 
-        // if a empty unit is found
-        if (mapMatrix[randomY][randomX] == 0) {
-            // update food in 2d array
-            mapMatrix[randomY][randomX] = 2;
-            // update food in canvas
-            domMatrix[randomY][randomX].style.backgroundColor = 'red';
-            break;
+function getDirection() {
+    return direction;
+}
+
+function getRelativeDirection(fromX, fromY, toX, toY) {
+    var diffX = fromX - toX;
+    var diffY = fromY - toY;
+    console.log(diffX);
+    console.log(diffY);
+
+    if (diffX == 1) return LEFT;
+    else if (diffX  == -1) return RIGHT;
+    else if (diffY == 1) return UP;
+    else return DOWN;
+}
+
+function aStarFinder() {
+    // make a new copy of the map 2d array
+    var map = new Array(unitNumY);
+    for (var i = 0; i < unitNumY; ++i) {
+        map[i] = new Array(unitNumX);
+    }
+    for (var i = 0; i < unitNumY; ++i) {
+        for (var j = 0; j < unitNumX; ++j) {
+            map[i][j] = mapMatrix[i][j];
         }
     }
+    var from = this.body[0];
+    map[from[1]][from[0]] = 0;
+    map[foodY][foodX] = 0;
+
+    var grid = new PF.Grid(unitNumX, unitNumY, map);
+    var finder = new PF.AStarFinder();
+    var path = finder.findPath(from[0], from[1], foodX, foodY, grid);
+    var nextNode = path[1];
+
+    console.log(from);
+    console.log(nextNode);
+    // get adjacent direction
+    return getRelativeDirection(from[0], from[1], nextNode[0], nextNode[1]);
+}
+
+function getRandomEmptyUnit() {
+    while (true) {
+        var x = Math.floor(unitNumX*Math.random());
+        var y = Math.floor(unitNumY*Math.random());
+        // if a empty unit is found
+        if (mapMatrix[y][x] == 0) break;
+    }
+    return [x, y];
+}
+
+function generateFood() {
+    randomEmptyUnit = getRandomEmptyUnit();
+    foodX = randomEmptyUnit[0]; 
+    foodY = randomEmptyUnit[1];
+    console.log(foodX); 
+    console.log(foodY); 
+    // update food in 2d array
+    mapMatrix[foodY][foodX] = 2;
+    // update food in canvas
+    domMatrix[foodY][foodX].style.backgroundColor = 'red';
 }
 
 window.onload = function() {
+    var initButton = document.getElementById("initbutton");
     var runButton = document.getElementById("runbutton");
     var stepButton = document.getElementById("stepbutton");
     var resetButton = document.getElementById("resetbutton");
-    var stopButton = document.getElementById("stopbutton");
+    //var stopButton = document.getElementById("stopbutton");
 
     var x, y;
     var curDrag;
@@ -254,9 +309,12 @@ window.onload = function() {
         curDrag = document.onmousemove = document.onmouseup = null;
     }
 
-    //key_display = document.getElementById("key");
 
-    snake = new Snake();
+    // draw displaying area
+    drawGrid();
+    clearmapMatrix();
+    generateFood();
+    var userSnake = new Snake(getDirection);
     //bind the snake controller with player's pressed direction
     document.onkeydown = function(event) {
         //key_display.innerText = event.keyCode + '';
@@ -277,16 +335,44 @@ window.onload = function() {
     }
 
     // bind events handlers
-    runButton.onclick = function() {snake.run();}; 
-    stepButton.onclick = function() {snake.step();};
-    resetButton.onclick = function() {snake.reset(); direction = RIGHT;}; 
-    stopButton.onclick = function() {snake.stop();};
+    var aiNumber;
+    var aiSnakeArray;
+    initButton.onclick = function() {
+        aiNumber = parseInt(document.getElementById('ai-number').value); 
+        aiSnakeArray = [];
+        userSnake.draw(getRandomEmptyUnit());
+        for (var i = 0; i < aiNumber; i++) {
+            aiSnakeArray[i] = new Snake(aStarFinder);
+            aiSnakeArray[i].draw(getRandomEmptyUnit());
+        } 
+    }
+    runButton.onclick = function() {
+        if (userSnake.end == true) {
+            userSnake.end = false;
+            userSnake.run();
+        }
+        for (var i = 0; i < aiNumber; i++) {
+            if (aiSnakeArray[i].end == true) {
+                aiSnakeArray[i].end = false;
+                aiSnakeArray[i].run();
+            }
+        }
+    };
+    stepButton.onclick = function() {
+        userSnake.step();
+        for (var i = 0; i < aiNumber; i++) {
+            aiSnakeArray[i].step();
+        }
+    }; 
+    resetButton.onclick = function() {
+        if (userSnake.end == true) userSnake.reset(); 
+        for (var i = 0; i < aiNumber; i++) {
+            if (aiSnakeArray[i].end == true)
+            aiSnakeArray[i].reset();
+        }
+        direction = RIGHT;
+    };
+    //stopButton.onclick = function() {snake.stop();};
 
 
-
-    // draw displaying area
-    drawGrid();
-    clearmapMatrix();
-    snake.draw();
-    generateFood();
 }

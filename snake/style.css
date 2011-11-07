@@ -7,9 +7,12 @@ body {
 
 button {
   float: left;
-  margin: 4px 6px;
-  width: 72px;
-  height: 25px;
+  /*margin: 4px 6px;*/
+  /*width: 72px;*/
+  width: 21%;
+  margin: 0 2%;
+  margin-top: 10px;
+  height: 20px;
   border-radius: 8px;
   border: none;
 }
@@ -38,9 +41,12 @@ button:hover {
 #control-panel {
   display: block;
   position: absolute;
-  top: 200px;
-  left: 200px;
-  padding: 10px;
+  overflow: hidden;
+  width: 350px;
+  height: 55px;
+  bottom: 50px;
+  right: 40px;
+  padding: 11px;
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.6);
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
@@ -49,4 +55,9 @@ button:hover {
 
 #monitor {
   width: 200px;
+}
+
+#ai-number {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
 }
