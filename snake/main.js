@@ -164,7 +164,8 @@ function bubble(x, y, words, lastTime) {
     div.className = "triangle-isosceles";
     div.style.left = x - 20 + 'px'; 
     div.style.top = y - 80 + 'px';
-    div.innerText = words;
+    div.textContent = words;
+    console.log(div.innerText);
     document.body.appendChild(div);
 
     setTimeout(function(){document.body.removeChild(div)}, lastTime*1000);
