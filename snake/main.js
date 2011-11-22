@@ -25,6 +25,7 @@ var unitNumX, unitNumY;
 const LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
 var direction;
 var foodX, foodY;
+var userSnake;
 
 // data structures used by Interpreter
 var mapMatrix; // 2d array storing the map 
@@ -145,7 +146,7 @@ function generateFood() {
     // update food in 2d array
     mapMatrix[foodY][foodX] = 2;
     // update food in canvas
-    domMatrix[foodY][foodX].style.backgroundColor = 'red';
+    $(domMatrix[foodY][foodX]).html('<img src="imgs/berry.png" width="20" height="20" alt="?" ></img>');
 }
 
 function removeFood() {
@@ -168,7 +169,7 @@ function bubble(x, y, words, lastTime) {
     console.log(div.innerText);
     document.body.appendChild(div);
 
-    setTimeout(function(){document.body.removeChild(div)}, lastTime*1000);
+    setTimeout(function(){$(div).fadeOut(500);}, lastTime*1000);
 }
 
 window.onload = function() {
@@ -223,7 +224,7 @@ window.onload = function() {
 
     // bind events handlers
     var aiNumber = 0;
-    var userSnake, aiSnakeArray;
+    var aiSnakeArray;
     userSnake = new Snake(getDirection);
     initButton.onclick = function() {
         userSnake.reset();

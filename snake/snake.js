@@ -7,21 +7,26 @@ Snake.prototype.move = function() {
     this.getDirection();
     // get the location of added node
     var headNode = [].concat(this.body[0]);
+    var addedNode = headNode.slice();
+    var dir;
     switch (this.direction) {
         case LEFT:
-            headNode[0]--;
+            addedNode[0]--;
+            dir = 'left';
             break;
         case RIGHT:
-            headNode[0]++;
+            addedNode[0]++;
+            dir = 'right';
             break;
         case UP:
-            headNode[1]--;
+            addedNode[1]--;
+            dir = 'up';
             break;
         case DOWN:
-            headNode[1]++;
+            addedNode[1]++;
+            dir = 'down';
             break;
     }
-    var addedNode = headNode;
     // exceed the border 
     if (addedNode[0] < 0 || addedNode[0] >= unitNumX || // x
     addedNode[1] < 0 || addedNode[1] >= unitNumY) { // y
@@ -39,16 +44,19 @@ Snake.prototype.move = function() {
 
     this.body.unshift(addedNode);
     if (this.grow == 0) {
+    // bug here!!! if grow equals 0 at the beginning of the game
         var deletedNode = this.body.pop();
         mapMatrix[deletedNode[1]][deletedNode[0]] = 0;
-        domMatrix[deletedNode[1]][deletedNode[0]].style.backgroundColor = "";
+        $(domMatrix[deletedNode[1]][deletedNode[0]]).empty();
     }
     else this.grow--;
 
     //update map matrix
+    $(domMatrix[addedNode[1]][addedNode[0]]).html('<img src="imgs/nyan-cat-'+dir+'.gif" width="20" height="20" alt="?"></img>');
+    $(domMatrix[headNode[1]][headNode[0]]).html('<img src="imgs/rainbow.png" width="20" height="20" alt="?" ></img>');
     mapMatrix[addedNode[1]][addedNode[0]] = 1;
     // update canvas
-    domMatrix[addedNode[1]][addedNode[0]].style.backgroundColor = this.color; 
+    //domMatrix[addedNode[1]][addedNode[0]].style.backgroundColor = this.color; 
 }
 
 Snake.prototype.step = function() {
@@ -114,7 +122,8 @@ Snake.prototype.draw = function(initPoint) {
     for (var i = 0; i < this.body.length; i++) {
         element = this.body[i];
         // draw snake in canvas
-        domMatrix[element[1]][element[0]].style.backgroundColor = this.color;
+        $('<img src="imgs/nyan-cat-right.gif" width="20" height="20" ></img>').appendTo(domMatrix[element[1]][element[0]]);
+        //domMatrix[element[1]][element[0]].style.backgroundColor = this.color;
 
         // draw snake in map matrix
         mapMatrix[element[1]][element[0]] = 1;
@@ -126,7 +135,7 @@ Snake.prototype.remove = function() {
     for (var i = 0; i < this.body.length; i++) {
         element = this.body[i];
         // remove snake on dom matrix
-        domMatrix[element[1]][element[0]].style.backgroundColor = "";
+        $(domMatrix[element[1]][element[0]]).empty();
         // remove snake on 2d array 
         mapMatrix[element[1]][element[0]] = 0;
     }
