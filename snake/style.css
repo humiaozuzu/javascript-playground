@@ -30,7 +30,7 @@ button:hover {
 }
 
 #canvas {
-  background: #FFF;
+  background: #FFF url(imgs/background.png) repeat;
   overflow: hidden;
   border-radius: 6px;
   margin: auto;
