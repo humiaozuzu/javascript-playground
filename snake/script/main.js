@@ -202,7 +202,7 @@ window.onload = function() {
 
     // draw displaying area
     drawGrid();
-    drawStars();
+    //drawStars();
     $('#ai-number').attr('value', 2);
     //bind the snake controller with player's pressed direction
     document.onkeydown = function(event) {

@@ -49,7 +49,7 @@ body {
 }
 
 #canvas {
-  background-color: #036;
+  background: #036 url(image/background.png) repeat;
   overflow: hidden;
   border-radius: 6px;
   margin: auto;
