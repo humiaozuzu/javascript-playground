@@ -2,25 +2,51 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Snake</title>
+    <title>Snake nyan cat</title>
     <link rel="stylesheet" href="./style.css" media="screen" charset="utf-8" />
-    <script type="text/javascript" src="./PathFinding.min.js"></script>
-    <script type="text/javascript" src="./snake.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" src="./main.js"></script>
+    <script type="text/javascript" src="./script/PathFinding.min.js"></script>
+    <script type="text/javascript" src="./script/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="./script/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="./script/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="./script/jquery.ui.mouse.min.js"></script>
+    <script type="text/javascript" src="./script/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="./script/jquery.ui.draggable.min.js"></script>
+    <script type="text/javascript" src="./script/snake.js"></script>
+    <script type="text/javascript" src="./script/main.js"></script>
   </head>
   <body>
     <div id="canvas">
     </div>
-    <!--<div class="riangle-isosceles">I'm Dead~! TvT</div>-->
-    <div id="control-panel"> 
-      Input AI Number: <input type="TEXT" size="2" id="ai-number" />
-      <br />
-      <button id="initbutton">Init</button>
-      <button id="runbutton">Run</button>
-      <button id="stepbutton">Step</button>
-      <button id="resetbutton">Revival</button>
-      <!--<button id="stopbutton">Stop</button>-->
+    <audio src="song.ogg" loop="loop" id="audio"></audio>
+    <div id="info-panel"> 
+      <img src="image/logo.png" width="320" alt="snake nyan cat logo" />
+      <h1 id="rule">Rules(click to toggle)</h1>
+      <div>
+        <p>
+        Use arrow keys(↑,↓,←,→) to control your 
+        <img src="image/nyan-cat-right.gif" width="30" alt="" />
+        to eat the 
+        <img src="image/berry.png" width="20px" alt="berry" />
+        .There are also many 
+        <img src="image/nyan-cat-right.gif" width="30" alt="" />
+        controlled by AI competing againt you.
+        Begin the Game through the following steps:
+        <ol>
+          <li>Input the AI number(2 by default)</li>
+          <li>Press Init button to initialize the game</li>
+          <li>Press Start button to Start the game</li>
+          <li>Press Revival button when you are dead</li>
+        </ol>
+        </p>
+        <hr />
+      </div>
+      <div>
+        Input AI Number: <input type="text" size="2" maxlength="2" id="ai-number" />
+        <br />
+        <button id="initbutton">Init</button>
+        <button id="startbutton">Start</button>
+        <button id="revivalbutton">Revival</button>
+      </div>
     </div>
   </body>
 </html>

@@ -5,32 +5,51 @@ body {
   color: #FFF;
 }
 
-button {
-  float: left;
+#info-panel h1 {
+    margin: 5px 0; 
+    display: inline-block;
+    font-size: 15px;
+}
+
+#info-panel h1:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+#hide {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+}
+
+#hide:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+#info-panel p,ol {
+    margin: 5px 1px;
+}
+
+#info-panel button {
+  /*float: left;*/
   /*margin: 4px 6px;*/
   /*width: 72px;*/
   width: 21%;
-  margin: 0 2%;
-  margin-top: 10px;
+  margin: 4px 5px;
   height: 20px;
   border-radius: 8px;
   border: none;
 }
 
-button:hover {
+#info-panel button:hover {
   cursor: pointer;
   color: #eee;
   background-color: #222;
 }
 
-.unit {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-width: 0 1px 1px 0;
-  float: left;
-}
-
 #canvas {
-  background: #FFF url(imgs/background.png) repeat;
+  background-color: #036;
   overflow: hidden;
   border-radius: 6px;
   margin: auto;
@@ -38,14 +57,26 @@ button:hover {
   vertical-align: bottom;
 }
 
-#control-panel {
+.star {
+    position: absolute;
+    widows: 3px;
+    height: 30px;
+}
+
+#canvas .unit {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-width: 0 1px 1px 0;
+  float: left;
+}
+
+#info-panel {
   display: block;
   position: absolute;
   overflow: hidden;
   width: 350px;
-  height: 55px;
-  bottom: 50px;
-  right: 40px;
+  /*height: 55px;*/
+  top: 10px;
+  right: 10px;
   padding: 11px;
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.6);
@@ -53,13 +84,10 @@ button:hover {
   z-index: 10;
 }
 
-#monitor {
-  width: 200px;
-}
-
 #ai-number {
   background-color: rgba(255, 255, 255, 0.2);
   border: none;
+  color: white;
 }
 
 .triangle-isosceles {
@@ -86,3 +114,50 @@ button:hover {
   border-style:solid;
   border-color: rgba(0, 0, 0, 0.5) transparent transparent transparent;
 }    
+
+/* rainbow css */
+.rainbow-right {
+  background: url(image/rainbow-vh.png) 0 20px;
+}
+
+.rainbow-left {
+  background: url(image/rainbow-vh.png) 20px 0;
+}
+.rainbow-up {
+  background: url(image/rainbow-vh.png) 20px 20px;
+}
+.rainbow-down {
+  background: url(image/rainbow-vh.png) 0 0;
+}
+
+.rainbow-up-right {
+  background: url(image/rainbow-clockwise.png) 0 0;
+}
+
+.rainbow-right-down {
+  background: url(image/rainbow-clockwise.png) 20px 0;
+}
+
+.rainbow-left-up {
+  background: url(image/rainbow-clockwise.png) 0 20px;
+}
+
+.rainbow-down-left {
+  background: url(image/rainbow-clockwise.png) 20px 20px;
+}
+
+.rainbow-left-down {
+  background: url(image/rainbow-anticlockwise.png) 0 0;
+}
+
+.rainbow-up-left {
+  background: url(image/rainbow-anticlockwise.png) 20px 0;
+}
+
+.rainbow-down-right {
+  background: url(image/rainbow-anticlockwise.png) 0 20px;
+}
+
+.rainbow-right-up {
+  background: url(image/rainbow-anticlockwise.png) 20px 20px;
+}
