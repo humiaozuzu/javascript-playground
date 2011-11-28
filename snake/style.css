@@ -3,6 +3,7 @@ body {
   padding: 0;
   background: #333;
   color: #FFF;
+  font-family: sans-serif;
 }
 
 #info-panel h1 {
