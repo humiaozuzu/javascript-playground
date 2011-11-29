@@ -19,9 +19,9 @@
     </div>
     <audio src="song.ogg" loop="loop" id="audio"></audio>
     <div id="info-panel"> 
-      <img src="image/logo.png" width="320" alt="snake nyan cat logo" />
-      <h1 id="rule">Rules(click to toggle)</h1>
+      <img id="logo" src="image/logo.png" width="350" alt="snake nyan cat logo" />
       <div>
+      <h1 id="rule">Rules(click to toggle)</h1>
         <p>
         Use arrow keys(↑,↓,←,→) to control your 
         <img src="image/nyan-cat-right.gif" width="30" alt="" />
@@ -39,13 +39,14 @@
         </ol>
         </p>
         <hr />
-      </div>
       <div>
-        Input AI Number: <input type="text" size="2" maxlength="2" id="ai-number" />
+        Input AI Number: <input type="text" size="1" maxlength="2" id="ai-number" />
         <br />
         <button id="initbutton">Init</button>
         <button id="startbutton">Start</button>
         <button id="revivalbutton">Revival</button>
+        <label><input type="checkbox" id="audio-controller" checked="checked"/>BGM</label>
+      </div>
       </div>
     </div>
   </body>

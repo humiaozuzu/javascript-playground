@@ -106,34 +106,50 @@ function getRelativeDirection(fromX, fromY, toX, toY) {
 
     if (diffX == 1) return LEFT;
     else if (diffX  == -1) return RIGHT;
-    else if (diffY == 1) return UP;
-    else return DOWN;
+    else if (diffY == -1) return DOWN;
+    else return UP;
 }
 
 function aStarFinder() {
-    // make a new copy of the map 2d array
-    var map = new Array(unitNumY);
-    for (var i = 0; i < unitNumY; ++i) {
-        map[i] = new Array(unitNumX);
-    }
-    for (var i = 0; i < unitNumY; ++i) {
-        for (var j = 0; j < unitNumX; ++j) {
-            map[i][j] = mapMatrix[i][j];
-        }
-    }
+    var nextNode = this.path[1];
     var from = this.body[0];
-    map[from[1]][from[0]] = 0;
-    map[foodY][foodX] = 0;
 
-    var grid = new PF.Grid(unitNumX, unitNumY, map);
-    var finder = new PF.AStarFinder();
-    var path = finder.findPath(from[0], from[1], foodX, foodY, grid);
-    var nextNode = path[1];
+    foodPos = this.path[this.path.length - 1];
+    if (nextNode && 
+        mapMatrix[nextNode[1]][nextNode[0]] == 0 &&
+        mapMatrix[foodPos[1]][foodPos[0]] == 2
+        ) {
+    }
+    else {
+        // make a new copy of the map 2d array
+        var map = new Array(unitNumY);
+        for (var i = 0; i < unitNumY; ++i) {
+            map[i] = new Array(unitNumX);
+        }
+        for (var i = 0; i < unitNumY; ++i) {
+            for (var j = 0; j < unitNumX; ++j) {
+                map[i][j] = mapMatrix[i][j];
+            }
+        }
+        // the first time to find path
+        if (this.body.length == 1)
+            map[from[1]][from[0]-1] = 1;
+        map[from[1]][from[0]] = 0;
+        map[foodY][foodX] = 0;
 
+        var grid = new PF.Grid(unitNumX, unitNumY, map);
+        var finder = new PF.AStarFinder();
+        this.path = finder.findPath(from[0], from[1], foodX, foodY, grid);
+        nextNode = this.path[1];
+    }
+        this.path.shift();
+
+    // get adjacent direction
     //console.log(from);
     //console.log(nextNode);
-    // get adjacent direction
-    return getRelativeDirection(from[0], from[1], nextNode[0], nextNode[1]);
+    var i = getRelativeDirection(from[0], from[1], nextNode[0], nextNode[1]);
+    //console.log(i);
+    return i;
 }
 
 function getRandomEmptyUnit() {
@@ -190,10 +206,23 @@ function bubble(x, y, words, lastTime) {
     setTimeout(function(){$(div).fadeOut(500);}, lastTime*1000);
 }
 
+function logoSlidein() {
+    var logo = $('<img>').attr('src', 'image/logo.png');
+    $(logo).css({
+        'position': 'absolute',
+        'top': '200px',
+        'left': '-700px'
+    });
+    $(logo).appendTo('#canvas');
+    $(logo).animate({'left': '200px'},2000).delay(2000).fadeOut(); 
+    $('#logo').delay(5000).fadeIn('slow');
+}
+
 window.onload = function() {
     var initButton = document.getElementById("initbutton");
     var startButton = document.getElementById("startbutton");
     var revivalButton = document.getElementById("revivalbutton");
+    var audioController = document.getElementById('audio-controller');
 
     $("#info-panel").draggable();
     $("#rule").click(function() {
@@ -203,6 +232,7 @@ window.onload = function() {
     // draw displaying area
     drawGrid();
     //drawStars();
+    logoSlidein();
     $('#ai-number').attr('value', 2);
     //bind the snake controller with player's pressed direction
     document.onkeydown = function(event) {
@@ -226,6 +256,18 @@ window.onload = function() {
     var aiNumber = 0;
     var aiSnakeArray;
     userSnake = new Snake(getDirection);
+    document.getElementById('logo').onmouseover = function() {
+        $('#logo').next().animate({ 'height': 'show'});
+    }
+    $('#info-panel').mouseleave(function() {
+        $('#logo').next().animate({ 'height': 'hide'});
+        console.log('out!');
+    });
+    audioController.onclick = function() {
+        var audio = document.getElementById('audio');
+        if (audio.paused) audio.play();
+        else audio.pause();
+    }
     initButton.onclick = function() {
         userSnake.reset();
         bubble(userSnake.body[0][0], userSnake.body[0][1], "I'm here ￣ε ￣", 2);
@@ -247,8 +289,9 @@ window.onload = function() {
             }, 3000);
     };
     startButton.onclick = function() {
-        document.getElementById('audio').play();
-        $('#rule').next().animate({ 'height': 'hide'});
+        if (document.getElementById('audio-controller').checked)
+            document.getElementById('audio').play();
+        //$('#logo').next().animate({ 'height': 'hide'});
         if (userSnake.end == true) {
             userSnake.end = false;
             userSnake.run();

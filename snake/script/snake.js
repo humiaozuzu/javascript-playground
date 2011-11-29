@@ -1,4 +1,4 @@
-const MOVE_INTERVAL = 100;
+const MOVE_INTERVAL = 300;
 
 function Snake(controller) {
     this.controller = controller; 
@@ -66,6 +66,7 @@ Snake.prototype.resetData = function() {
     this.prev_direction = RIGHT;
     this.end = true;        // bool value indicating the termination of game 
     this.body = [];
+    this.path = [];
     this.grow = 3;
     $(this.snakeHead).attr('src', 'image/nyan-cat-right.gif');
     //this.color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);

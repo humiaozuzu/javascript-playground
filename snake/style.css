@@ -27,6 +27,9 @@ body {
     cursor: pointer;
 }
 
+#logo {
+    display: none;
+}
 
 #info-panel p,ol {
     margin: 5px 1px;
