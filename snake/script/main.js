@@ -210,11 +210,13 @@ function logoSlidein() {
     var logo = $('<img>').attr('src', 'image/logo.png');
     $(logo).css({
         'position': 'absolute',
+        'z-index': '2',
         'top': '200px',
         'left': '-700px'
     });
     $(logo).appendTo('#canvas');
-    $(logo).animate({'left': '200px'},2000).delay(2000).fadeOut(); 
+    var width = window.innerWidth;
+    $(logo).animate({'left': width/2-300+'px'},2000).delay(2000).fadeOut(); 
     $('#logo').delay(5000).fadeIn('slow');
 }
 
